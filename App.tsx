@@ -2,9 +2,14 @@ import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
 import Auth from './components/Auth'
 import Account from './components/Account'
-import { View } from 'react-native'
 import { Session } from '@supabase/supabase-js'
 import * as Font from 'expo-font'
+
+// Navigation imports
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+
+const Stack = createNativeStackNavigator()
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -35,8 +40,16 @@ export default function App() {
   }
 
   return (
-    <View>
-      {session && session.user ? <Account key={session.user.id} session={session} /> : <Auth />}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {session && session.user ? (
+          <Stack.Screen name="Account" options={{ headerShown: false }}>
+            {() => <Account key={session.user.id} session={session} />}
+          </Stack.Screen>
+        ) : (
+          <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
