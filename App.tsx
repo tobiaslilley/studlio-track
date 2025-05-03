@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
-import Auth from './components/Auth'
 import Account from './components/Account'
+import Login from './components/Login'
+import Signup from './components/Signup'
 import { Session } from '@supabase/supabase-js'
 import * as Font from 'expo-font'
 
@@ -47,7 +48,10 @@ export default function App() {
             {() => <Account key={session.user.id} session={session} />}
           </Stack.Screen>
         ) : (
-          <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
+          <>
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>
